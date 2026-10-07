@@ -6,6 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <h1>Olá, turma</h1>
+    <p>
+        <?php
+            echo "Este texto foi gerado pelo php"
+        ?>
+    </p>
 </body>
 </html>
