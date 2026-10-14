@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    font-family: 'Inter', sans-serif;
+    --fundo: #f5f7f6;
+    --texto: #1e2a24;
+    --cartao: #ffffff;
+    --borda: #dce3de;
+    --destaque: #26734d;
+}
+
+.tema-claro {
+    --fundo: #f5f7f6;
+    --texto: #1e2a24;
+    --cartao: #ffffff;
+    --borda: #dce3de;
+    --destaque: #26734d;
+}
+
+.tema-escuro {
+    --fundo: #141a17;
+    --texto: #e6ece8;
+    --cartao: #202923;
+    --borda: #354239;
+    --destaque: #78d6a2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    width: min(100% - 40px, 1000px);
+    margin-inline: auto;
+}
+
+/* Cabeçalho */
+
+.cabecalho {
+    border-bottom: 1px solid var(--borda);
+    padding: 24px 0;
+}
+
+.cabecalho .container,
+.menu,
+.rodape .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.identidade h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.identidade p {
+    margin: 4px 0 0;
+    opacity: 0.7;
+}
+
+.menu {
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+a {
+    color: var(--destaque);
+    text-decoration: none;
+}
+
+.menu a {
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--texto);
+    font-size: 14px;
+}
+
+.menu a:hover,
+.menu a.ativo {
+    background: var(--cartao);
+    color: var(--destaque);
+}
+
+.menu .botao-tema {
+    border: 1px solid var(--borda);
+}
+
+/* Conteúdo */
+
+main.container {
+    min-height: 65vh;
+    padding-top: 48px;
+    padding-bottom: 48px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 28px;
+    letter-spacing: -0.7px;
+}
+
+p {
+    line-height: 1.8;
+}
+
+.dados {
+    padding-left: 20px;
+}
+
+.dados li {
+    margin-bottom: 8px;
+}
+
+/* Habilidades */
+
+.etiquetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+.etiquetas li {
+    padding: 8px 14px;
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+    background: var(--cartao);
+    font-size: 14px;
+}
+
+/* Projetos */
+
+.cartoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.cartao {
+    padding: 24px;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    background: var(--cartao);
+}
+
+.cartao h3 {
+    margin-top: 0;
+    font-size: 19px;
+}
+
+.cartao p {
+    opacity: 0.8;
+}
+
+.cartao a {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+/* Rodapé */
+
+.rodape {
+    padding: 24px 0;
+    border-top: 1px solid var(--borda);
+    font-size: 13px;
+}
+
+.rodape .container {
+    flex-wrap: wrap;
+}
+
+/* Celulares */
+
+@media (max-width: 650px) {
+    .cabecalho .container {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .menu {
+        justify-content: flex-start;
+        gap: 4px;
+    }
+
+    .menu a {
+        padding: 8px;
+    }
+
+    main.container {
+        padding-top: 32px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .rodape .container {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+}
