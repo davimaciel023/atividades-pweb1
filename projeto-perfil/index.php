@@ -74,6 +74,15 @@
     function e(string $texto): string {
         return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
     }
+
+    if (($_GET['formato'] ?? '') === 'json') {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(
+            ['perfil' => $perfil, 'projetos' => $projetos],
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+        );
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -167,6 +176,7 @@
     
         <div class="container">
             <span>Tema atual: <?= e($tema) ?></span>
+            <a href="?formato=json">Ver dados em JSON</a>
             <span>&copy; <?= date('Y') ?></span>
         </div>
         
