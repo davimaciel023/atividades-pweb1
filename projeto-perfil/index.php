@@ -61,6 +61,16 @@
         }
     }
 
+    $tema = $_GET['tema'] ?? $_COOKIE['tema'] ?? 'claro';
+    if (!is_string($tema) || ($tema !== 'claro' && $tema !== 'escuro')) {
+        $tema = 'claro';
+    }
+    setcookie(
+        'tema', $tema, time() + 60 * 60 * 24 * 30, '/'
+    );
+
+    $outroTema = $tema === 'claro' ? 'escuro' : 'claro';
+ 
     function e(string $texto): string {
         return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
     }
@@ -74,7 +84,7 @@
     <title>Meu Perfil</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="tema-<?= e($tema) ?>">
     
     <header class="cabecalho">
         <div class="container">
@@ -88,6 +98,7 @@
                 <a href="?pagina=inicio"<?= $pagina === 'inicio' ? ' class="ativo"' : '' ?>>Início</a>
                 <a href="?pagina=habilidades"<?= $pagina === 'habilidades' ? ' class="ativo"' : '' ?>>Habilidades</a>
                 <a href="?pagina=projetos"<?= ($pagina === 'projetos' || $pagina === 'projeto') ? ' class="ativo"' : '' ?>>Projetos</a>
+                <a class="botao-tema" href="?pagina=<?= e(urlencode($pagina)) ?><?= $pagina === 'projeto' ? '&amp;id=' . $id : '' ?>&amp;tema=<?= e($outroTema) ?>">Tema <?= e($outroTema) ?></a>
             </nav>
     
         </div>
@@ -155,6 +166,7 @@
     <footer class="rodape">
     
         <div class="container">
+            <span>Tema atual: <?= e($tema) ?></span>
             <span>&copy; <?= date('Y') ?></span>
         </div>
         
