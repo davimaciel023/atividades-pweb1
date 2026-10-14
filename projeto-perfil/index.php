@@ -50,6 +50,16 @@
         $pagina = '';
     };
 
+    $id = 0;
+    if ($pagina === 'projeto') {
+        $id = (int) ($_GET['id'] ?? 0);
+
+        if (!isset($projetos[$id])){
+            http_response_code(404);
+         }elseif (!in_array($pagina, ['inicio', 'habilidades', 'projetos'], true)) {
+            http_response_code(404);
+        }
+    }
 
     function e(string $texto): string {
         return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
@@ -113,12 +123,26 @@
                 <article class="cartao">
                     <h3><?= e($projeto['titulo']) ?></h3>
                     <p><?= e($projeto['descricao']) ?></p>
+                    <a href="?pagina=projeto&amp;id=<?= $numero ?>">Ver detalhes</a>
                 </article>
                 
                 <?php endforeach; ?>
             
             </div>
         
+        <?php elseif ($pagina === 'projeto' && isset($projetos[$id])): ?>
+            
+            <h2><?= e($projetos[$id]['titulo']) ?></h2>
+            <p><?= e($projetos[$id]['descricao']) ?></p>
+            <p><strong>Tecnologias:</strong> <?= e($projetos[$id]['tecnologias']) ?></p>
+            <p><a href="?pagina=projetos">&larr; Voltar aos projetos</a></p>
+
+        <?php elseif ($pagina === 'projeto'): ?>
+        
+            <h2>Projeto não encontrado</h2>
+            <p>Não existe projeto com esse número.</p>
+        
+            <p><a href="?pagina=projetos">&larr; Voltar aos projetos</a></p>
         <?php else: ?>
         
             <h2>Página não encontrada</h2>
