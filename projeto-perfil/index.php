@@ -19,6 +19,31 @@
         ],  
     ];
 
+    $projetos = [
+        1 => [
+            'titulo' => 'Aplicativo para Escola de Jiu-Jitsu',
+            'descricao' => 'Aplicativo mobile para modernizar a gestão de uma escola de Jiu-Jitsu, facilitando o acompanhamento de alunos, turmas, treinos e informações administrativas.',
+            'tecnologias' => 'Ionic, Angular e FastAPI',
+        ],
+
+        2 => [
+            'titulo' => 'Vantage',
+            'descricao' => 'Plataforma digital desenvolvida para ajudar o pequeno empreendedor a controlar as finanças da sua empresa.',
+            'tecnologias' => 'Ionic, Angular e FastAPI',
+        ],
+
+        3 => [
+            'titulo' => 'Sistema de Gestão Lunare Joias',
+            'descricao' => 'Sistema de gestão para uma joalheria, com foco na organização de produtos, controle de estoque, cadastro de clientes e acompanhamento das operações comerciais.',
+            'tecnologias' => 'Angular e Django',
+        ],
+
+        4 => [
+            'titulo' => 'PrevFácil',
+            'descricao' => 'Sistema voltado à organização de informações previdenciárias, permitindo estruturar cadastros, acompanhar solicitações e centralizar dados para facilitar a gestão dos atendimentos.',
+            'tecnologias' => 'Angular e Django',
+        ],
+    ];
 
     $pagina = $_GET['pagina'] ?? 'inicio';
     if (!is_string($pagina)) {
@@ -51,6 +76,8 @@
         
             <nav class="menu">
                 <a href="?pagina=inicio"<?= $pagina === 'inicio' ? ' class="ativo"' : '' ?>>Início</a>
+                <a href="?pagina=habilidades"<?= $pagina === 'habilidades' ? ' class="ativo"' : '' ?>>Habilidades</a>
+                <a href="?pagina=projetos"<?= ($pagina === 'projetos' || $pagina === 'projeto') ? ' class="ativo"' : '' ?>>Projetos</a>
             </nav>
     
         </div>
@@ -68,6 +95,30 @@
                 <li><strong>Cidade:</strong> <?= e($perfil['cidade']) ?></li>
             </ul>
     
+        <?php elseif ($pagina === 'habilidades'): ?>
+            <h2>Habilidades</h2>
+            <p>Total: <strong><?= count($perfil['habilidades']) ?></strong> habilidades.</p>
+            <p><?= e(implode(', ', $perfil['habilidades'])) ?>.</p>
+
+            <ul class="etiquetas">
+                <?php foreach ($perfil['habilidades'] as $habilidade): ?>
+                    <li><?= e($habilidade) ?></li>
+                <?php endforeach; ?>
+
+            </ul>
+        <?php elseif ($pagina === 'projetos'): ?>
+            <h2>Projetos</h2>
+            <div class="cartoes">
+                <?php foreach ($projetos as $numero => $projeto): ?>
+                <article class="cartao">
+                    <h3><?= e($projeto['titulo']) ?></h3>
+                    <p><?= e($projeto['descricao']) ?></p>
+                </article>
+                
+                <?php endforeach; ?>
+            
+            </div>
+        
         <?php else: ?>
         
             <h2>Página não encontrada</h2>
