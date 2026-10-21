@@ -8,6 +8,7 @@ class ContaBancaria
     private string $titular;
     private string $numero;
     private float $saldo = 0.0;
+    private array $extrato = [];
 
     public function __construct(string $titular, string $numero)
     {
@@ -25,12 +26,18 @@ class ContaBancaria
         return $this->saldo;
     }
 
+    public function getExtrato(): array
+    {
+        return $this->extrato;
+    }
+
     public function depositar(float $valor): void
     {
         if ($valor <= 0) {
             throw new Exception('Depósito inválido.');
         }
         $this->saldo += $valor;
+        $this->registrar('Depósito', $valor);
     }
 
     public function sacar(float $valor): void
@@ -42,6 +49,12 @@ class ContaBancaria
             throw new Exception('Saldo insuficiente.');
         }
         $this->saldo -= $valor;
+        $this->registrar('Saque', $valor);
+    }
+
+    private function registrar(string $operacao, float $valor): void
+    {
+        $this->extrato[] = "{$operacao}: R$ " . number_format($valor, 2, ',', '.');
     }
 
     public function apresentarDados(): void
@@ -68,4 +81,8 @@ try {
     echo 'Recusado: ' . $e->getMessage() . "\n";
 }
 
+echo "\nExtrato de {$conta->getTitular()}:\n";
+foreach ($conta->getExtrato() as $linha) {
+    echo "- {$linha}\n";
+}
 echo 'Saldo final: R$ ' . number_format($conta->getSaldo(), 2, ',', '.') . "\n";
