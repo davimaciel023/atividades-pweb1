@@ -91,3 +91,55 @@ class Disciplina
         return $aprovados;
     }
 }
+
+$pweb = new Disciplina('Programação Web I');
+$pweb->adicionarAluno(new Aluno('Ana', 8.0, 9.5));
+$pweb->adicionarAluno(new Aluno('Bruno', 5.0, 6.0));
+$pweb->adicionarAluno(new Aluno('Caio', 2.5, 3.0));
+$pweb->adicionarAluno(new Aluno('Daniela', 7.0, 7.0));
+
+$mensagem = '';
+if (isset($_GET['teste']) && $_GET['teste'] === '1') {
+    try {
+        $pweb->adicionarAluno(new Aluno('Eduardo', 11.0, 8.0));
+    } catch (Exception $e) {
+        $mensagem = $e->getMessage();
+    }
+}
+
+$mediaTurma = number_format($pweb->calcularMediaTurma(), 2, ',', '.');
+$aprovados = $pweb->contarAprovados();
+$total = count($pweb->getAlunos());
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title><?= htmlspecialchars($pweb->getNome()) ?></title>
+</head>
+<body>
+    <?php if ($mensagem !== ''): ?>
+        <p><strong>Recusado:</strong> <?= htmlspecialchars($mensagem) ?></p>
+    <?php endif; ?>
+
+    <h1><?= htmlspecialchars($pweb->getNome()) ?></h1>
+
+    <table border="1">
+        <tr>
+            <th>Aluno</th>
+            <th>Média</th>
+            <th>Situação</th>
+        </tr>
+        <?php foreach ($pweb->getAlunos() as $aluno): ?>
+            <tr>
+                <td><?= htmlspecialchars($aluno->getNome()) ?></td>
+                <td><?= number_format($aluno->calcularMedia(), 1, ',', '.') ?></td>
+                <td><?= $aluno->situacao() ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <p>Média da turma: <?= $mediaTurma ?></p>
+    <p>Aprovados: <?= $aprovados ?> de <?= $total ?></p>
+</body>
+</html>
