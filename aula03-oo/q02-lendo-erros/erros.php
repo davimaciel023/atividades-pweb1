@@ -11,12 +11,13 @@ class Aluno
 
     public function apresentar(): void
     {
-        echo "Sou $nome, do {$this->semestre}º semestre.\n";
+        echo "Sou {$this->nome}, do {$this->semestre}º semestre.\n";
     }
 }
 
 $aluno = new Aluno();
-$aluno->$nome = 'Carla';
-$aluno->semestre = '3';
+$aluno->nome = 'Carla';
+$aluno->semestre = 3;
+$aluno->curso = 'ADS';
 echo "Curso: {$aluno->curso}\n";
 $aluno->apresentar();
