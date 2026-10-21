@@ -9,6 +9,13 @@ class Produto
     public float $preco;
     public int $quantidade;
 
+    public function __construct(string $nome, float $preco, int $quantidade = 1)
+    {
+        $this->nome = $nome;
+        $this->preco = $preco;
+        $this->quantidade = $quantidade;
+    }
+
     public function calcularTotal(): float
     {
         return $this->preco * $this->quantidade;
@@ -32,12 +39,17 @@ class Produto
     }
 }
 
-$produto = new Produto();
-$produto->nome = 'Notebook';
-$produto->preco = 3500.00;
-$produto->quantidade = 3;
+$notebook = new Produto('Notebook', 3500.00, 3);
+$mouse = new Produto('Mouse', 59.90, 10);
+$monitor = new Produto('Monitor', 899.00);
 
-$produto->apresentar();
-echo 'Total: R$ ' . number_format($produto->calcularTotal(), 2, ',', '.') . "\n";
-$produto->aplicarDesconto(10);
-echo 'Preço após desconto: R$ ' . number_format($produto->preco, 2, ',', '.') . "\n";
+$produtos = [$notebook, $mouse, $monitor];
+$totalPedido = 0;
+
+foreach ($produtos as $produto) {
+    $produto->apresentar();
+    echo 'Total: R$ ' . number_format($produto->calcularTotal(), 2, ',', '.') . "\n\n";
+    $totalPedido += $produto->calcularTotal();
+}
+
+echo 'Total do pedido: R$ ' . number_format($totalPedido, 2, ',', '.') . "\n";
