@@ -8,19 +8,19 @@ class Retangulo
     public float $largura;
     public float $altura;
 
-    public function area(): void
+    public function area(): float
     {
-        echo "Área: " . ($this->largura * $this->altura) . "\n";
+        return $this->largura * $this->altura;
     }
 
-    public function perimetro(): void
+    public function perimetro(): float
     {
-        echo "Perímetro: " . (2 * ($this->largura + $this->altura)) . "\n";
+        return 2 * ($this->largura + $this->altura);
     }
 }
 
 $sala = new Retangulo();
 $sala->largura = 8;
 $sala->altura = 6;
-$sala->area();
-$sala->perimetro();
+echo "Área: {$sala->area()}\n";
+echo "Perímetro: {$sala->perimetro()}\n";
