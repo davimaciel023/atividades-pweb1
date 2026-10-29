@@ -45,6 +45,102 @@
         }
     }
 
+    class Perfil
+    {
+        private string $nome;
+        private string $curso;
+        private string $campus;
+        private string $cidade;
+        private string $apresentacao;
+        private array $habilidades;
+        private array $projetos = [];
+
+        public function __construct(
+            string $nome,
+            string $curso,
+            string $campus,
+            string $cidade,
+            string $apresentacao,
+            array $habilidades
+        ) {
+            if (count($habilidades) < 5) {
+                throw new Exception('O perfil precisa de pelo menos 5 habilidades.');
+            }
+            $this->nome = $nome;
+            $this->curso = $curso;
+            $this->campus = $campus;
+            $this->cidade = $cidade;
+            $this->apresentacao = $apresentacao;
+            $this->habilidades = $habilidades;
+        }
+
+        public function getNome(): string
+        {
+            return $this->nome;
+        }
+
+        public function getCurso(): string
+        {
+            return $this->curso;
+        }
+
+        public function getCampus(): string
+        {
+            return $this->campus;
+        }
+
+        public function getCidade(): string
+        {
+            return $this->cidade;
+        }
+
+        public function getApresentacao(): string
+        {
+            return $this->apresentacao;
+        }
+
+        public function getHabilidades(): array
+        {
+            return $this->habilidades;
+        }
+
+        public function getProjetos(): array
+        {
+            return $this->projetos;
+        }
+
+        public function adicionarProjeto(Projeto $projeto): void
+        {
+            $this->projetos[count($this->projetos) + 1] = $projeto;
+        }
+
+        public function getProjeto(int $id): Projeto
+        {
+            if (!isset($this->projetos[$id])) {
+                throw new Exception('Projeto não encontrado.');
+            }
+            return $this->projetos[$id];
+        }
+
+        public function paraArray(): array
+        {
+            $projetos = [];
+            foreach ($this->projetos as $numero => $projeto) {
+                $projetos[$numero] = $projeto->paraArray();
+            }
+
+            return [
+                'nome' => $this->nome,
+                'curso' => $this->curso,
+                'campus' => $this->campus,
+                'apresentacao' => $this->apresentacao,
+                'cidade' => $this->cidade,
+                'habilidades' => $this->habilidades,
+                'projetos' => $projetos,
+            ];
+        }
+    }
+
     $perfil = [
         'nome' => 'Davi Maciel',  
         'curso' => 'ADS - Análise e desenvolvimento de sistemas',  
