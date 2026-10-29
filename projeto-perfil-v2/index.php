@@ -197,7 +197,7 @@
     if (($_GET['formato'] ?? '') === 'json') {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(
-            $perfil,
+            $perfil->paraArray(),
             JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         );
         exit;
