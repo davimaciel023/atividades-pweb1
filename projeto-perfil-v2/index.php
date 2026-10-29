@@ -208,17 +208,27 @@
     $pagina = $_GET['pagina'] ?? 'inicio';
     if (!is_string($pagina)) {
         $pagina = '';
-    };
+    }
+    $paginaPedida = $pagina;
 
-    $projetos = $perfil->getProjetos();
+    $titulo = 'Meu Perfil';
     $id = 0;
-    if ($pagina === 'projeto') {
+    $projetoAtual = null;
+
+    if (!in_array($pagina, ['inicio', 'habilidades', 'projetos', 'projeto'], true)) {
+        http_response_code(404);
+        $pagina = 'nao-encontrado';
+        $titulo = 'Página não encontrada';
+    } elseif ($pagina === 'projeto') {
         $id = (int) ($_GET['id'] ?? 0);
 
-        if (!isset($projetos[$id])){
+        try {
+            $projetoAtual = $perfil->getProjeto($id);
+            $titulo = $projetoAtual->getTitulo();
+        } catch (Exception $e) {
             http_response_code(404);
-         }elseif (!in_array($pagina, ['inicio', 'habilidades', 'projetos'], true)) {
-            http_response_code(404);
+            $pagina = 'nao-encontrado';
+            $titulo = $e->getMessage();
         }
     }
 ?>
@@ -228,7 +238,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Perfil</title>
+    <title><?= e($titulo) ?></title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body class="tema-<?= e($tema) ?>">
@@ -245,7 +255,7 @@
                 <a href="?pagina=inicio"<?= $pagina === 'inicio' ? ' class="ativo"' : '' ?>>Início</a>
                 <a href="?pagina=habilidades"<?= $pagina === 'habilidades' ? ' class="ativo"' : '' ?>>Habilidades</a>
                 <a href="?pagina=projetos"<?= ($pagina === 'projetos' || $pagina === 'projeto') ? ' class="ativo"' : '' ?>>Projetos</a>
-                <a class="botao-tema" href="?pagina=<?= e(urlencode($pagina)) ?><?= $pagina === 'projeto' ? '&amp;id=' . $id : '' ?>&amp;tema=<?= e($outroTema) ?>">Tema <?= e($outroTema) ?></a>
+                <a class="botao-tema" href="?pagina=<?= e(urlencode($paginaPedida)) ?><?= $paginaPedida === 'projeto' ? '&amp;id=' . $id : '' ?>&amp;tema=<?= e($outroTema) ?>">Tema <?= e($outroTema) ?></a>
             </nav>
 
         </div>
@@ -277,7 +287,7 @@
         <?php elseif ($pagina === 'projetos'): ?>
             <h2>Projetos</h2>
             <div class="cartoes">
-                <?php foreach ($projetos as $numero => $projeto): ?>
+                <?php foreach ($perfil->getProjetos() as $numero => $projeto): ?>
                 <article class="cartao">
                     <h3><?= e($projeto->getTitulo()) ?></h3>
                     <p><?= e($projeto->getDescricao()) ?></p>
@@ -288,22 +298,22 @@
 
             </div>
 
-        <?php elseif ($pagina === 'projeto' && isset($projetos[$id])): ?>
-
-            <h2><?= e($projetos[$id]->getTitulo()) ?></h2>
-            <p><?= e($projetos[$id]->getDescricao()) ?></p>
-            <p><strong>Tecnologias:</strong> <?= e($projetos[$id]->getTecnologias()) ?></p>
-            <p><a href="?pagina=projetos">&larr; Voltar aos projetos</a></p>
-
         <?php elseif ($pagina === 'projeto'): ?>
 
-            <h2>Projeto não encontrado</h2>
+            <h2><?= e($projetoAtual->getTitulo()) ?></h2>
+            <p><?= e($projetoAtual->getDescricao()) ?></p>
+            <p><strong>Tecnologias:</strong> <?= e($projetoAtual->getTecnologias()) ?></p>
+            <p><a href="?pagina=projetos">&larr; Voltar aos projetos</a></p>
+
+        <?php elseif ($paginaPedida === 'projeto'): ?>
+
+            <h2><?= e($titulo) ?></h2>
             <p>Não existe projeto com esse número.</p>
 
             <p><a href="?pagina=projetos">&larr; Voltar aos projetos</a></p>
         <?php else: ?>
 
-            <h2>Página não encontrada</h2>
+            <h2><?= e($titulo) ?></h2>
             <p>A página que você procurou não existe.</p>
             <p><a href="?pagina=inicio">&larr; Ir para o início</a></p>
 
