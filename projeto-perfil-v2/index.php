@@ -1,5 +1,50 @@
 <?php
 
+    declare(strict_types=1);
+
+    // 1. Classes
+
+    class Projeto
+    {
+        private string $titulo;
+        private string $descricao;
+        private string $tecnologias;
+
+        public function __construct(string $titulo, string $descricao, string $tecnologias)
+        {
+            if (trim($titulo) === '') {
+                throw new Exception('O projeto precisa de um título.');
+            }
+            $this->titulo = $titulo;
+            $this->descricao = $descricao;
+            $this->tecnologias = $tecnologias;
+        }
+
+        public function getTitulo(): string
+        {
+            return $this->titulo;
+        }
+
+        public function getDescricao(): string
+        {
+            return $this->descricao;
+        }
+
+        public function getTecnologias(): string
+        {
+            return $this->tecnologias;
+        }
+
+        public function paraArray(): array
+        {
+            return [
+                'titulo' => $this->titulo,
+                'descricao' => $this->descricao,
+                'tecnologias' => $this->tecnologias,
+            ];
+        }
+    }
+
     $perfil = [
         'nome' => 'Davi Maciel',  
         'curso' => 'ADS - Análise e desenvolvimento de sistemas',  
